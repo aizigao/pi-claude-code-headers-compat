@@ -1,0 +1,21 @@
+README-CN.md
+  s_9c90672f50ec60::t_9966d0f2b9b4fe 200-227,229-237
+README.md
+  s_9c90672f50ec60::t_f248571abe4647 201-238
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "c7ffdcd188b78830eb6d6b04d1c38b2cc3ac5572",
+  "prompts": {},
+  "sessions": {
+    "s_9c90672f50ec60": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e58bd-1613-7c00-b5d2-d85f55fd7967",
+        "model": "gpt-5.3-codex"
+      },
+      "human_author": "aizigao <weixiangzhe@live.com>"
+    }
+  }
+}
