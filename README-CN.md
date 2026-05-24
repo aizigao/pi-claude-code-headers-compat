@@ -197,3 +197,41 @@ npm install
 - `apiKey` 在 `models.json` 中既可以写环境变量名，也可以直接写明文 key
 - 当前插件主要面向 Claude 兼容接口场景
 - 如果 provider 没有命中，插件不会改写请求
+
+## 请求头变更清单（新增/删除/修改）
+
+说明：以下变更仅在 provider 命中兼容规则时生效。
+
+### 被删除的头
+
+默认会删除：
+- `x-api-key`
+- `anthropic-dangerous-direct-browser-access`
+- `accept-language`
+- `x-app`
+- `x-pi-provider-marker`
+- `x-stainless-*`（前缀匹配）
+- `sec-fetch-*`（前缀匹配）
+
+### 被添加的头
+
+默认会补齐（若原来不存在则新增）：
+- `authorization: Bearer ${API_KEY}`
+- `user-agent: 2.1.110 (Claude Code)`
+- `anthropic-version: 2023-06-01`
+- `accept: application/json`
+- `content-type: application/json`
+
+另外，插件在注册 provider 时会注入标记头用于命中识别：
+- `x-pi-provider-marker: <providerName>`
+
+### 可以在配置中修改的头
+
+默认会强制覆盖（若原来已存在则改写为下列值）：
+- `authorization`
+- `user-agent`
+- `anthropic-version`
+- `accept`
+- `content-type`
+
+可通过 `modifyHeaders`（旧配置方式）或 `providers.<name>.setHeaders`（新配置方式）覆盖这些默认值。

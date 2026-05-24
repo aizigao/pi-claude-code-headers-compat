@@ -198,3 +198,41 @@ After configuration:
 - `apiKey` in `models.json` can be either an environment variable name or a literal key
 - this package is currently aimed at Claude-compatible provider scenarios
 - if a provider does not match, requests will not be rewritten
+
+## Request header change list (added/removed/modified)
+
+Note: the following changes only apply when a provider matches the compatibility rules.
+
+### Removed headers
+
+Removed by default:
+- `x-api-key`
+- `anthropic-dangerous-direct-browser-access`
+- `accept-language`
+- `x-app`
+- `x-pi-provider-marker`
+- `x-stainless-*` (prefix match)
+- `sec-fetch-*` (prefix match)
+
+### Added headers
+
+Added by default when missing:
+- `authorization: Bearer ${API_KEY}`
+- `user-agent: 2.1.110 (Claude Code)`
+- `anthropic-version: 2023-06-01`
+- `accept: application/json`
+- `content-type: application/json`
+
+In addition, the plugin injects a marker header during provider registration for request matching:
+- `x-pi-provider-marker: <providerName>`
+
+### Headers you can modify in config
+
+These headers are force-overridden by default (if already present, values are rewritten):
+- `authorization`
+- `user-agent`
+- `anthropic-version`
+- `accept`
+- `content-type`
+
+You can override the defaults through `modifyHeaders` (legacy style) or `providers.<name>.setHeaders` (new style).

@@ -1,6 +1,6 @@
 {
   "name": "@aizigao/pi-claude-code-headers-compat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pi extension package for Claude-compatible header and request-path adaptation across multiple providers.",
   "type": "module",
   "license": "MIT",
@@ -19,7 +19,8 @@
     "claude code",
     "anthropic",
     "headers",
-    "compat"
+    "compat",
+    "Cloudflare"
   ],
   "files": [
     "index.ts",
