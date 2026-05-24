@@ -1,0 +1,33 @@
+package.json
+  s_ea802eaecf94c4::t_2cfcd7021a3f0f 2-21
+  s_ea802eaecf94c4::t_e024baa4f33126 35-37
+index.ts
+  s_ea802eaecf94c4::t_e4fdbb5a545ebd 1-30,39,43-47,49-121,132-133,142-145,147,149-150,152-156,158-162,164-172,174-177,194,197-201,203-341,343-428
+  s_ea802eaecf94c4::t_c6407ee1244078 48,134-141,148,151,157,342
+  s_ea802eaecf94c4::t_22d4350bf37869 31-38,40-42,122-131,146,163,173,178-193,196,202
+  s_ea802eaecf94c4::t_bd5cbf8053f17c 195
+README-CN.md
+  s_ea802eaecf94c4::t_d023efce0d38df 26,29-34
+  s_ea802eaecf94c4::t_44dc9a409a7ace 5,7,9-13,16,18-22,24,28,35-36,39,41,133,135,137,157,161-164,166-173,176-177,182,184-187,190,192,194-195
+  s_ea802eaecf94c4::t_3d5ec60fb06f5f 1-4,6,8,15,17,23,25,27,37-38,40,42-48,51,53-55,57-66,126-131,134,136,138,140-142,148-153,174,181,183,189,191
+  s_ea802eaecf94c4::t_5dafa4b2a1732a 50,52,56,82-124,139
+  s_ea802eaecf94c4::t_a26b6bb0ef6195 143-147,154-155,160,165,175
+  s_ea802eaecf94c4::t_27e182e9c21c0f 178-180,193
+  s_ea802eaecf94c4::t_9fdeebec9f6f9b 158
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "431792ca5e1984973b5c8b82a2ae7fcf2528e670",
+  "prompts": {},
+  "sessions": {
+    "s_ea802eaecf94c4": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e578b-4623-7c55-a928-c0355144dcb7",
+        "model": "zyb-gpt"
+      },
+      "human_author": "aizigao <weixiangzhe@live.com>"
+    }
+  }
+}
