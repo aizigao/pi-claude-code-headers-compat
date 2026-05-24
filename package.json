@@ -1,0 +1,59 @@
+{
+  "name": "@aizigao/pi-claude-code-headers-compat",
+  "version": "0.1.0",
+  "description": "Pi extension package for Claude-compatible header and request-path adaptation across multiple providers.",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/aizigao/pi-claude-code-headers-compat#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aizigao/pi-claude-code-headers-compat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aizigao/pi-claude-code-headers-compat/issues"
+  },
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "claude",
+    "claude code",
+    "anthropic",
+    "headers",
+    "compat"
+  ],
+  "files": [
+    "index.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check": "node ./node_modules/typescript/bin/tsc --noEmit",
+    "lint": "node ./node_modules/eslint/bin/eslint.js .",
+    "lint:fix": "node ./node_modules/eslint/bin/eslint.js . --fix"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "dependencies": {
+    "undici": "^7.16.0"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@types/node": "^24.10.1",
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4"
+  }
+}
