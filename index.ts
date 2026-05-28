@@ -351,12 +351,13 @@ function patchGlobalFetch(): void {
   }
   fetchPatched = true;
 
-  const originalFetch = globalThis.fetch.bind(globalThis);
+  let underlyingFetch: typeof fetch = globalThis.fetch;
+  const _prevDesc = Object.getOwnPropertyDescriptor(globalThis, "fetch");
 
-  globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+  const _patchedFetch: typeof fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const provider = getMatchedCompat(input, init);
     if (!provider) {
-      return originalFetch(input, init);
+      return underlyingFetch(input, init);
     }
 
     const rewrittenInput = rewriteInputUrl(input, provider.rewrite);
@@ -378,8 +379,21 @@ function patchGlobalFetch(): void {
       headers.set(key, value);
     }
 
-    return originalFetch(rewrittenInput, { ...init, headers });
+    return underlyingFetch(rewrittenInput, { ...init, headers });
   }) as typeof fetch;
+
+  Object.defineProperty(globalThis, "fetch", {
+    configurable: true,
+    enumerable: true,
+    get() {
+      return _patchedFetch;
+    },
+    set(newFetch: typeof fetch) {
+      if (newFetch === _patchedFetch) return;
+      _prevDesc?.set?.call(globalThis, newFetch);
+      underlyingFetch = newFetch;
+    },
+  });
 }
 
 function registerCompatProviders(pi: ExtensionAPI): void {

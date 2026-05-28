@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.2] - 2026-05-28
+
+### Fixed
+- Replace `setTimeout` + `globalThis.fetch = patchedFetch` with `Object.defineProperty`
+  getter/setter to survive `undici.install()` from `configureHttpDispatcher()` and coexist
+  with other extensions that also patch `globalThis.fetch`.
+- `originalFetch` replaced with dynamic `underlyingFetch` reference so that
+  `undici.install()` updates propagate to proxied requests.
+
+## [0.1.1] - 2026-05-24
+
+### Fixed
+- Update to use `globalThis.fetch` interception style matching pi-proxy-fetch extension.
+
 ## [0.1.0] - 2026-05-24
 
 ### Added
