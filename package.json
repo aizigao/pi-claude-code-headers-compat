@@ -1,6 +1,6 @@
 {
   "name": "@aizigao/pi-claude-code-headers-compat",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Pi extension package for Claude-compatible header and request-path adaptation across multiple providers.",
   "type": "module",
   "license": "MIT",

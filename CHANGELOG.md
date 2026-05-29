@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0] - 2026-05-29
+
+### Fixed
+- Align `apiKey` resolution with Pi's latest value-resolution rules, including
+  `!command`, `$ENV`, `${ENV}`, escape handling, and legacy env-name fallback.
+- Update `README.md` and `README-CN.md` examples to use the new `$ENV` style.
+
 ## [0.1.2] - 2026-05-28
 
 ### Fixed

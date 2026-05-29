@@ -53,7 +53,7 @@ npm install
     "aicoding-sh-anthropic": {
       "baseUrl": "https://api.aicoding.sh",
       "api": "anthropic-messages",
-      "apiKey": "AI_CODING_SH_API_KEY",
+      "apiKey": "$AI_CODING_SH_API_KEY",
       "models": [
         {
           "id": "claude-sonnet-4-6",
@@ -133,7 +133,8 @@ npm install
 
 说明：
 - `providers` 下的 key 就是 provider 名
-- `apiKey` 和官网一致 可以写环境变量名，也可以直接写明文 key 
+- `apiKey` 和 Pi 最新官方规则一致，支持 `!command`、`$ENV`、`${ENV}`、`${KEY_PREFIX}_${KEY_SUFFIX}` 这种组合插值、`$$` / `$!` 转义，以及明文字面量
+- 为了兼容旧写法，像 `AI_CODING_SH_API_KEY` 这种全大写环境变量名风格的值也仍会按环境变量名处理
 - 插件会根据这里的 provider 名和 baseUrl 来匹配兼容逻辑
 
 ### 2. 配置兼容规则
@@ -180,8 +181,12 @@ npm install
 - 如果某个字段不写，会回退到默认值
 - `AUTHORIZATION` 默认使用 `Bearer ${API_KEY}`
 - `${API_KEY}` 会替换成该 provider 最终解析出来的 key 值
-- 如果 `apiKey` 是环境变量名，则使用环境变量值
-- 如果 `apiKey` 是明文，则直接使用明文值
+- `apiKey` 的解析规则与 Pi 最新版本保持一致：
+  - `!command`：执行命令并使用标准输出
+  - `$ENV` / `${ENV}`：插值环境变量，也支持 `${KEY_PREFIX}_${KEY_SUFFIX}` 这种组合写法
+  - `$$` 输出字面量 `$`，`$!` 输出字面量 `!`
+  - 其他值按明文字面量处理
+- 为兼容旧写法，如果是类似全大写环境变量名风格的值，且环境变量存在，也会继续按环境变量读取
 
 ## 使用说明
 
@@ -194,7 +199,7 @@ npm install
 ## 注意事项
 
 - `matchedProvidersUrl` 中的 provider 名必须和 `models.json` 保持一致
-- `apiKey` 在 `models.json` 中既可以写环境变量名，也可以直接写明文 key
+- `apiKey` 在 `models.json` 中支持 Pi 最新的取值解析语法，包括 `!command`、`$ENV`、`${ENV}`、组合插值、转义和明文
 - 当前插件主要面向 Claude 兼容接口场景
 - 如果 provider 没有命中，插件不会改写请求
 

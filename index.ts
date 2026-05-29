@@ -1,3 +1,4 @@
+import { execSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -131,9 +132,90 @@ function getLegacySetHeaders(modifyHeaders: LegacyModifyHeaders | undefined): Re
   };
 }
 
+function resolveEnvironmentValue(input: string): string | null {
+  const env = process?.env ?? {};
+  let output = "";
+
+  for (let index = 0; index < input.length; ) {
+    const char = input[index];
+    if (char !== "$") {
+      output += char;
+      index += 1;
+      continue;
+    }
+
+    const nextChar = input[index + 1];
+    if (nextChar === "$" || nextChar === "!") {
+      output += nextChar;
+      index += 2;
+      continue;
+    }
+
+    if (nextChar === "{") {
+      const closingIndex = input.indexOf("}", index + 2);
+      if (closingIndex === -1) {
+        output += char;
+        index += 1;
+        continue;
+      }
+
+      const envName = input.slice(index + 2, closingIndex);
+      const envValue = env[envName];
+      if (envValue == null) {
+        return null;
+      }
+
+      output += envValue;
+      index = closingIndex + 1;
+      continue;
+    }
+
+    const match = input.slice(index + 1).match(/^[A-Za-z_][A-Za-z0-9_]*/);
+    if (!match) {
+      output += char;
+      index += 1;
+      continue;
+    }
+
+    const envName = match[0];
+    const envValue = env[envName];
+    if (envValue == null) {
+      return null;
+    }
+
+    output += envValue;
+    index += 1 + envName.length;
+  }
+
+  return output;
+}
+
+function resolveCommandValue(command: string): string | null {
+  try {
+    return execSync(command, {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return null;
+  }
+}
+
+function usesValueResolutionSyntax(value: string): boolean {
+  return value.startsWith("!") || value.includes("$");
+}
+
 function resolveApiKeyValue(apiKey: string | undefined): string | null {
   if (!apiKey) {
     return null;
+  }
+
+  if (apiKey.startsWith("!")) {
+    return resolveCommandValue(apiKey.slice(1));
+  }
+
+  if (usesValueResolutionSyntax(apiKey)) {
+    return resolveEnvironmentValue(apiKey);
   }
 
   return process?.env?.[apiKey] ?? apiKey;

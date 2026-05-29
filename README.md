@@ -54,7 +54,7 @@ Keep using Pi's default format for this file. No structure changes are needed.
     "aicoding-sh-anthropic": {
       "baseUrl": "https://api.aicoding.sh",
       "api": "anthropic-messages",
-      "apiKey": "AI_CODING_SH_API_KEY",
+      "apiKey": "$AI_CODING_SH_API_KEY",
       "models": [
         {
           "id": "claude-sonnet-4-6",
@@ -134,7 +134,8 @@ Keep using Pi's default format for this file. No structure changes are needed.
 
 Notes:
 - the key under `providers` is the provider name
-- `apiKey` follows the same rule as the official config: it can be an environment variable name or a literal API key
+- `apiKey` follows the latest official value-resolution rules: it supports `!command`, `$ENV`, `${ENV}`, composite interpolation like `${KEY_PREFIX}_${KEY_SUFFIX}`, escapes like `$$` / `$!`, and literal values
+- legacy uppercase env-style values such as `AI_CODING_SH_API_KEY` are still treated as env var names for backward compatibility
 - the plugin matches compatibility logic using the provider name and `baseUrl`
 
 ### 2. Configure compatibility rules
@@ -181,8 +182,12 @@ Notes:
 - if a field is omitted, it falls back to the default value
 - `AUTHORIZATION` defaults to `Bearer ${API_KEY}`
 - `${API_KEY}` will be replaced with the final resolved key value for that provider
-- if `apiKey` is an environment variable name, the environment value is used
-- if `apiKey` is a literal value, the literal value is used directly
+- `apiKey` resolution follows Pi's latest rules:
+  - `!command` executes the command and uses stdout
+  - `$ENV` / `${ENV}` interpolates environment variables, including composite values like `${KEY_PREFIX}_${KEY_SUFFIX}`
+  - `$$` emits a literal `$`, and `$!` emits a literal `!`
+  - other values are treated as literals
+- for backward compatibility, legacy uppercase env-style values are still resolved as environment variable names when present
 
 ## Usage
 
@@ -195,7 +200,7 @@ After configuration:
 ## Notes
 
 - provider names in `matchedProvidersUrl` must stay consistent with `models.json`
-- `apiKey` in `models.json` can be either an environment variable name or a literal key
+- `apiKey` in `models.json` supports the latest Pi value-resolution syntax, including `!command`, `$ENV`, `${ENV}`, composite interpolation, escapes, and literals
 - this package is currently aimed at Claude-compatible provider scenarios
 - if a provider does not match, requests will not be rewritten
 
