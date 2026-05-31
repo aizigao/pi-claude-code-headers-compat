@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0] - 2026-05-31
+
+### Changed
+- Replace direct `globalThis.fetch` patching with `registerFetchMiddleware` from
+  `@aizigao/pi-fetch-pipeline`, adopting a middleware-based interception approach
+  that is more composable with other extensions.
+- Remove `Object.defineProperty` fetch getter/setter pattern and `fetchPatched` guard,
+  delegating lifecycle management to the fetch pipeline.
+- Replace `setTimeout(() => patchGlobalFetch(), 0)` with synchronous
+  `registerCompatFetchMiddleware()` during provider registration.
+
+### Added
+- Add `@aizigao/pi-fetch-pipeline` as a runtime dependency.
+
+### Removed
+- Remove direct `undici` dependency usage for fetch interception (still required
+  as a transitive peer dependency).
+
 ## [0.2.0] - 2026-05-29
 
 ### Fixed

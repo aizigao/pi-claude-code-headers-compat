@@ -189,6 +189,10 @@ Notes:
   - other values are treated as literals
 - for backward compatibility, legacy uppercase env-style values are still resolved as environment variable names when present
 
+## How it works
+
+This package uses `@aizigao/pi-fetch-pipeline` to register a fetch middleware that intercepts outgoing requests. When a request matches a configured provider, the middleware rewrites the URL and adjusts headers before forwarding the request down the pipeline. This approach avoids directly patching `globalThis.fetch`, making it safer to coexist with other extensions that also modify fetch behavior.
+
 ## Usage
 
 After configuration:

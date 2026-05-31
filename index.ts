@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import type { ExtensionAPI, ProviderConfig, ProviderModelConfig } from "@earendil-works/pi-coding-agent";
+import { registerFetchMiddleware } from "@aizigao/pi-fetch-pipeline";
 
 declare const process:
   | {
@@ -75,8 +76,6 @@ const DEFAULT_SET_HEADERS = {
 const DEFAULT_REWRITE = {
   "/messages": "/v1/messages",
 };
-
-let fetchPatched = false;
 
 function getAgentDir(): string {
   return process?.env?.PI_CODING_AGENT_DIR ?? join(homedir(), ".pi", "agent");
@@ -427,53 +426,36 @@ function applyHeaderTemplates(headers: Record<string, string>, provider: Resolve
   return applied;
 }
 
-function patchGlobalFetch(): void {
-  if (fetchPatched) {
-    return;
-  }
-  fetchPatched = true;
-
-  let underlyingFetch: typeof fetch = globalThis.fetch;
-  const _prevDesc = Object.getOwnPropertyDescriptor(globalThis, "fetch");
-
-  const _patchedFetch: typeof fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
-    const provider = getMatchedCompat(input, init);
-    if (!provider) {
-      return underlyingFetch(input, init);
-    }
-
-    const rewrittenInput = rewriteInputUrl(input, provider.rewrite);
-    const headers = new Headers();
-
-    if (rewrittenInput instanceof Request) {
-      copyHeaders(headers, rewrittenInput.headers);
-    }
-    copyHeaders(headers, init?.headers);
-
-    for (const key of [...headers.keys()]) {
-      if (shouldRemoveHeader(key, provider.removeHeaders)) {
-        headers.delete(key);
+function registerCompatFetchMiddleware(): void {
+  registerFetchMiddleware({
+    name: "pi-claude-code-headers-compat",
+    priority: 10,
+    middleware: async ({ input, init, next }) => {
+      const provider = getMatchedCompat(input, init);
+      if (!provider) {
+        return next(input, init);
       }
-    }
 
-    const nextHeaders = applyHeaderTemplates(provider.setHeaders, provider);
-    for (const [key, value] of Object.entries(nextHeaders)) {
-      headers.set(key, value);
-    }
+      const rewrittenInput = rewriteInputUrl(input, provider.rewrite);
+      const headers = new Headers();
 
-    return underlyingFetch(rewrittenInput, { ...init, headers });
-  }) as typeof fetch;
+      if (rewrittenInput instanceof Request) {
+        copyHeaders(headers, rewrittenInput.headers);
+      }
+      copyHeaders(headers, init?.headers);
 
-  Object.defineProperty(globalThis, "fetch", {
-    configurable: true,
-    enumerable: true,
-    get() {
-      return _patchedFetch;
-    },
-    set(newFetch: typeof fetch) {
-      if (newFetch === _patchedFetch) return;
-      _prevDesc?.set?.call(globalThis, newFetch);
-      underlyingFetch = newFetch;
+      for (const key of [...headers.keys()]) {
+        if (shouldRemoveHeader(key, provider.removeHeaders)) {
+          headers.delete(key);
+        }
+      }
+
+      const nextHeaders = applyHeaderTemplates(provider.setHeaders, provider);
+      for (const [key, value] of Object.entries(nextHeaders)) {
+        headers.set(key, value);
+      }
+
+      return next(rewrittenInput, { ...init, headers });
     },
   });
 }
@@ -520,5 +502,5 @@ function registerCompatProviders(pi: ExtensionAPI): void {
 
 export default function (pi: ExtensionAPI) {
   registerCompatProviders(pi);
-  setTimeout(() => patchGlobalFetch(), 0);
+  registerCompatFetchMiddleware();
 }
