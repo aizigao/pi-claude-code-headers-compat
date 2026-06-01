@@ -1,6 +1,6 @@
 # pi-claude-code-headers-compat
 
-[简体中文](./README-CN.md) | [English](./README.md)
+[简体中文](https://github.com/aizigao/pi-claude-code-headers-compat/blob/main/README-CN.md) | [English](https://github.com/aizigao/pi-claude-code-headers-compat/blob/main/README.md)
 
 [![npm version](https://img.shields.io/npm/v/%40aizigao%2Fpi-claude-code-headers-compat.svg)](https://www.npmjs.com/package/@aizigao/pi-claude-code-headers-compat)
 
@@ -146,7 +146,7 @@ npm install
 ```json
 {
   "enable": true,
-  "matchedProvidersUrl": ["aicoding-sh-anthropic"],
+  "matchedProviders": ["aicoding-sh-anthropic"],
   "modifyHeaders": {
     "USER_AGENT": "2.1.110 (Claude Code)",
     "ANTHROPIC_VERSION": "2023-06-01"
@@ -160,12 +160,16 @@ npm install
 
 是否启动
 
-#### `matchedProvidersUrl`
+#### `matchedProviders`
 需要启用兼容逻辑的 provider 名列表, 按需配置就可以了。
 
 要求：
 - 名称必须和 `models.json` 里的 provider key 一致
 - 只有这里列出的 provider 才会启用兼容处理
+
+兼容说明：
+- `matchedProviders` 是当前字段名
+- 为了兼容旧版本，`matchedProvidersUrl` 仍然可用
 
 #### `modifyHeaders`
 用于覆盖默认请求头值。
@@ -202,7 +206,8 @@ npm install
 
 ## 注意事项
 
-- `matchedProvidersUrl` 中的 provider 名必须和 `models.json` 保持一致
+- `matchedProviders` 中的 provider 名必须和 `models.json` 保持一致
+- 旧字段 `matchedProvidersUrl` 仍可继续使用，但新配置建议改用 `matchedProviders`
 - `apiKey` 在 `models.json` 中支持 Pi 最新的取值解析语法，包括 `!command`、`$ENV`、`${ENV}`、组合插值、转义和明文
 - 当前插件主要面向 Claude 兼容接口场景
 - 如果 provider 没有命中，插件不会改写请求

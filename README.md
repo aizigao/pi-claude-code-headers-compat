@@ -1,6 +1,6 @@
 # pi-claude-code-headers-compat
 
-[简体中文](./README-CN.md) | [English](./README.md)
+[简体中文](https://github.com/aizigao/pi-claude-code-headers-compat/blob/main/README-CN.md) | [English](https://github.com/aizigao/pi-claude-code-headers-compat/blob/main/README.md)
 
 [![npm version](https://img.shields.io/npm/v/%40aizigao%2Fpi-claude-code-headers-compat.svg)](https://www.npmjs.com/package/@aizigao/pi-claude-code-headers-compat)
 
@@ -147,7 +147,7 @@ Your current configuration example:
 ```json
 {
   "enable": true,
-  "matchedProvidersUrl": ["aicoding-sh-anthropic"],
+  "matchedProviders": ["aicoding-sh-anthropic"],
   "modifyHeaders": {
     "USER_AGENT": "2.1.110 (Claude Code)",
     "ANTHROPIC_VERSION": "2023-06-01"
@@ -161,12 +161,16 @@ Field reference:
 
 Whether to enable it.
 
-#### `matchedProvidersUrl`
+#### `matchedProviders`
 The list of provider names that should use compatibility handling. Configure it as needed.
 
 Requirements:
 - the names must match the provider keys in `models.json`
 - only providers listed here will get compatibility handling
+
+Compatibility note:
+- `matchedProviders` is the current field name
+- legacy `matchedProvidersUrl` is still supported for backward compatibility
 
 #### `modifyHeaders`
 Used to override default header values.
@@ -203,7 +207,8 @@ After configuration:
 
 ## Notes
 
-- provider names in `matchedProvidersUrl` must stay consistent with `models.json`
+- provider names in `matchedProviders` must stay consistent with `models.json`
+- legacy `matchedProvidersUrl` is still accepted, but new configs should use `matchedProviders`
 - `apiKey` in `models.json` supports the latest Pi value-resolution syntax, including `!command`, `$ENV`, `${ENV}`, composite interpolation, escapes, and literals
 - this package is currently aimed at Claude-compatible provider scenarios
 - if a provider does not match, requests will not be rewritten

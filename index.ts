@@ -40,6 +40,7 @@ type LegacyModifyHeaders = {
 
 type CompatConfig = {
   enable?: boolean;
+  matchedProviders?: string[];
   matchedProvidersUrl?: string[];
   modifyHeaders?: LegacyModifyHeaders;
   providers?: Record<string, CompatProviderOverride>;
@@ -273,7 +274,7 @@ function getCompatProviders(): ResolvedProviderCompat[] {
     return providers;
   }
 
-  const matchedProviders = compatConfig.matchedProvidersUrl ?? [];
+  const matchedProviders = compatConfig.matchedProviders ?? compatConfig.matchedProvidersUrl ?? [];
   for (const providerName of matchedProviders) {
     const providerConfig = modelProviders[providerName];
     if (!providerConfig) {
