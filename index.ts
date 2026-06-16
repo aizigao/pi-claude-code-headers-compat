@@ -69,7 +69,7 @@ const DEFAULT_REMOVE_HEADERS = [
 ];
 const DEFAULT_SET_HEADERS = {
   authorization: "Bearer ${API_KEY}",
-  "user-agent": "2.1.110 (Claude Code)",
+  "user-agent": "2.1.178 (Claude Code)",
   "anthropic-version": "2023-06-01",
   accept: "application/json",
   "content-type": "application/json",

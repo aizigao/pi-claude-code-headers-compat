@@ -148,7 +148,7 @@ npm install
   "enable": true,
   "matchedProviders": ["aicoding-sh-anthropic"],
   "modifyHeaders": {
-    "USER_AGENT": "2.1.110 (Claude Code)",
+    "USER_AGENT": "2.1.178 (Claude Code)",
     "ANTHROPIC_VERSION": "2023-06-01"
   }
 }
@@ -231,7 +231,7 @@ npm install
 
 默认会补齐（若原来不存在则新增）：
 - `authorization: Bearer ${API_KEY}`
-- `user-agent: 2.1.110 (Claude Code)`
+- `user-agent: 2.1.178 (Claude Code)`
 - `anthropic-version: 2023-06-01`
 - `accept: application/json`
 - `content-type: application/json`

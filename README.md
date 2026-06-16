@@ -149,7 +149,7 @@ Your current configuration example:
   "enable": true,
   "matchedProviders": ["aicoding-sh-anthropic"],
   "modifyHeaders": {
-    "USER_AGENT": "2.1.110 (Claude Code)",
+    "USER_AGENT": "2.1.178 (Claude Code)",
     "ANTHROPIC_VERSION": "2023-06-01"
   }
 }
@@ -232,7 +232,7 @@ Removed by default:
 
 Added by default when missing:
 - `authorization: Bearer ${API_KEY}`
-- `user-agent: 2.1.110 (Claude Code)`
+- `user-agent: 2.1.178 (Claude Code)`
 - `anthropic-version: 2023-06-01`
 - `accept: application/json`
 - `content-type: application/json`
