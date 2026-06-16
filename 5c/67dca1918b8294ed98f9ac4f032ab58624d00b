@@ -1,0 +1,23 @@
+README-CN.md
+  s_2b547aef7ffb83::t_6ca38c72eb27ff 151,234
+README.md
+  s_2b547aef7ffb83::t_341256d9b2ea1c 152,235
+index.ts
+  s_2b547aef7ffb83::t_4345594b0222e8 72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "5c67dca1918b8294ed98f9ac4f032ab58624d00b",
+  "prompts": {},
+  "sessions": {
+    "s_2b547aef7ffb83": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019ece7e-e0b0-75a0-9390-a88de246129d",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "aizigao <weixiangzhe@live.com>"
+    }
+  }
+}
